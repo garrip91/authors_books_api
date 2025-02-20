@@ -1,0 +1,52 @@
+[
+    {
+        "model": "authors_books_app.author",
+        "pk": 1,
+        "fields": {
+            "first_name": "Имя #1",
+            "last_name": "Фамилия #1",
+            "date_of_birth": "1903-01-01",
+            "date_of_death": "1983-01-01"
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 2,
+        "fields": {
+            "first_name": "Имя #2",
+            "last_name": "Фамилия #2",
+            "date_of_birth": "2003-02-02",
+            "date_of_death": null
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 3,
+        "fields": {
+            "first_name": "Имя #3",
+            "last_name": "Фамилия #3",
+            "date_of_birth": "1904-03-03",
+            "date_of_death": "1984-03-03"
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 4,
+        "fields": {
+            "first_name": "Имя #4",
+            "last_name": "Фамилия #4",
+            "date_of_birth": "2004-04-04",
+            "date_of_death": null
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 5,
+        "fields": {
+            "first_name": "Имя #5",
+            "last_name": "Фамилия #5",
+            "date_of_birth": "1905-05-05",
+            "date_of_death": "1985-05-05"
+        }
+    }
+]

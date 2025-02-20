@@ -1,0 +1,37 @@
+[
+    {
+        "model": "authors_books_app.genre",
+        "pk": 1,
+        "fields": {
+            "name": "Жанр #1"
+        }
+    },
+    {
+        "model": "authors_books_app.genre",
+        "pk": 2,
+        "fields": {
+            "name": "Жанр #2"
+        }
+    },
+    {
+        "model": "authors_books_app.genre",
+        "pk": 3,
+        "fields": {
+            "name": "Жанр #3"
+        }
+    },
+    {
+        "model": "authors_books_app.genre",
+        "pk": 4,
+        "fields": {
+            "name": "Жанр #4"
+        }
+    },
+    {
+        "model": "authors_books_app.genre",
+        "pk": 5,
+        "fields": {
+            "name": "Жанр #5"
+        }
+    }
+]
