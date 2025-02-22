@@ -44,6 +44,13 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all().order_by("id")
     serializer_class = AuthorSerializer
     #permission_classes = [permissions.IsAuthenticated]
+    #name = "Авторы"
+
+    def get_view_name(self):
+        return "Авторы"
+    
+    def get_view_description(self, html=False):
+        return "Страница API с авторами книг"
 
 
 class GenreViewSet(viewsets.ModelViewSet):
@@ -53,6 +60,12 @@ class GenreViewSet(viewsets.ModelViewSet):
     serializer_class = GenreSerializer
     #permission_classes = [permissions.IsAuthenticated]
 
+    def get_view_name(self):
+        return "Жанры"
+    
+    def get_view_description(self, html=False):
+        return "Страница API с жанрами книг"
+
 
 class BookViewSet(viewsets.ModelViewSet):
     """Класс обработки запросов и возврата ответов ДЛЯ КНИГ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/books/)"""
@@ -60,6 +73,12 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by("id")
     serializer_class = BookSerializer
     #permission_classes = [permissions.IsAuthenticated]
+
+    def get_view_name(self):
+        return "Книги"
+    
+    def get_view_description(self, html=False):
+        return "Страница API с книгами"
 
 
 class AllDataViewSet(viewsets.ViewSet):
@@ -82,3 +101,9 @@ class AllDataViewSet(viewsets.ViewSet):
 
     def get_serializer(self, *args, **kwargs):
         return self.serializer_class(*args, **kwargs)
+    
+    def get_view_name(self):
+        return "Авторы, жанры и книги"
+    
+    def get_view_description(self, html=False):
+        return "Страница API с авторами, жанрами и книгами"
