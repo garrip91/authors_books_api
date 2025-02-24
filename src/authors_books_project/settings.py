@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 #    "PAGE_SIZE": 10
 #}
 
+# ДОБАВЛЕНИЕ В API НАСТРОЙКИ ФИЛЬТРАЦИИ ДАННЫХ ОТ DRF:
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
 }
