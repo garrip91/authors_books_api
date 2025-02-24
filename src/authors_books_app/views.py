@@ -39,7 +39,7 @@ def index(request):
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
-    """Класс обработки запросов и возврата ответов ДЛЯ АВТОРОВ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/authors/)"""
+    """Класс обработки запросов и возврата ответов ДЛЯ АВТОРОВ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/authors/)"""
     
     queryset = Author.objects.all().order_by("id")
     serializer_class = AuthorSerializer
@@ -54,7 +54,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
 
 
 class GenreViewSet(viewsets.ModelViewSet):
-    """Класс обработки запросов и возврата ответов ДЛЯ ЖАНРОВ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/genres/)"""
+    """Класс обработки запросов и возврата ответов ДЛЯ ЖАНРОВ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/genres/)"""
     
     queryset = Genre.objects.all().order_by("id")
     serializer_class = GenreSerializer
@@ -68,7 +68,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class BookViewSet(viewsets.ModelViewSet):
-    """Класс обработки запросов и возврата ответов ДЛЯ КНИГ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/books/)"""
+    """Класс обработки запросов и возврата ответов ДЛЯ КНИГ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/books/)"""
     
     queryset = Book.objects.all().order_by("id")
     serializer_class = BookSerializer
@@ -82,7 +82,7 @@ class BookViewSet(viewsets.ModelViewSet):
 
 
 class AllDataViewSet(viewsets.ViewSet):
-    """Класс обработки запросов и возврата ответов ДЛЯ ВСЕХ ОБЪЕКТОВ/СУЩНОСТЕЙ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/all-data/)"""
+    """Класс обработки запросов и возврата ответов ДЛЯ ВСЕХ ОБЪЕКТОВ/СУЩНОСТЕЙ с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/all-data/)"""
     
     serializer_class = AllDataSerializer
     
