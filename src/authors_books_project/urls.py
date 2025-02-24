@@ -30,10 +30,13 @@ router.register(r"authors", AuthorViewSet, basename="author")
 router.register(r"genres", GenreViewSet, basename="genre")
 router.register(r"books", BookViewSet, basename="book")
 
+# ВЕРСИРОВАНИЕ API:
+api_version = "v1"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path("all-data/", AllDataViewSet.as_view(), name="all-data"),
-    path("api/", include(router.urls)),
+    path(f"api/{api_version}/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("", include("authors_books_app.urls", namespace="authors_books_app")),
 ]
