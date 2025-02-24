@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles', # ЭТО ВСТРОЕННОЕ ПРИЛОЖЕНИЕ ОТВЕЧАЕТ ЗА СБОР СТАТИЧЕСКИХ ФАЙЛОВ (.css, .js и т.д...) ИЗ КАЖДОГО ПРИЛОЖЕНИЯ
     
     "rest_framework", # ЭТО "ДОПОЛНИТЕЛЬНОЕ" ПРИЛОЖЕНИЕ (хоть оно и работает только с фреймворком Django), "ПОДТЯНУТОЕ" ИЗ СТОРОННЕЙ БИБЛИОТЕКИ (в данном случае djangorestframework==3.15.2) ДЛЯ ВЗАИМОДЕЙСТВИЯ С REST API
-    "debug_toolbar", # ЭТО ИНСТРУМЕНТ ДЛЯ ОТЛАДКИ И АНАЛИЗА ПРОИЗВОДИТЕЛЬНОСТИ ВЕБ-ПРИЛОЖЕНИЙ
+    "debug_toolbar", # ЭТО "ДОПОЛНИТЕЛЬНОЕ" ПРИЛОЖЕНИЕ ДЛЯ ОТЛАДКИ И АНАЛИЗА ПРОИЗВОДИТЕЛЬНОСТИ ВЕБ-ПРИЛОЖЕНИЙ
+    "django_filters", # ЭТО "ДОПОЛНИТЕЛЬНОЕ" ПРИЛОЖЕНИЕ ДЛЯ СОЗДАНИЯ ФИЛЬТРОВ ДЛЯ МОДЕЛЕЙ
 
     "authors_books_app.apps.AuthorsBooksAppConfig", # ЭТО "КАСТОМНОЕ" ПРИЛОЖЕНИЕ ДЛЯ ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЬСКИХ МОДЕЛЕЙ, ПРЕДСТАВЛЕНИЙ, ШАБЛОНОВ И Т.Д..., А ТАКЖЕ ДЛЯ ВЗАИМОДЕЙСТВИЯ С НИМИ
 ]
@@ -52,6 +53,10 @@ INSTALLED_APPS = [
 #    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
 #    "PAGE_SIZE": 10
 #}
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
+}
 
 # СИСТЕМА ХУКОВ ДЛЯ ОБРАБОТКИ ЗАПРОСОВ/ОТВЕТОВ ВО ФРЕЙМВОРКЕ:
 MIDDLEWARE = [
