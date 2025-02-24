@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from .settings import DEBUG
+
 from authors_books_app.views import AuthorViewSet, GenreViewSet, BookViewSet, AllDataViewSet
 
 
@@ -35,3 +37,8 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("", include("authors_books_app.urls", namespace="authors_books_app")),
 ]
+
+if DEBUG:
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ]
