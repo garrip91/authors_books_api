@@ -49,16 +49,6 @@ INSTALLED_APPS = [
     "authors_books_app.apps.AuthorsBooksAppConfig", # ЭТО "КАСТОМНОЕ" ПРИЛОЖЕНИЕ ДЛЯ ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЬСКИХ МОДЕЛЕЙ, ПРЕДСТАВЛЕНИЙ, ШАБЛОНОВ И Т.Д..., А ТАКЖЕ ДЛЯ ВЗАИМОДЕЙСТВИЯ С НИМИ
 ]
 
-#REST_FRAMEWORK = {
-#    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-#    "PAGE_SIZE": 10
-#}
-
-# ДОБАВЛЕНИЕ В API НАСТРОЙКИ ФИЛЬТРАЦИИ ДАННЫХ ОТ DRF:
-REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
-}
-
 # СИСТЕМА ХУКОВ ДЛЯ ОБРАБОТКИ ЗАПРОСОВ/ОТВЕТОВ ВО ФРЕЙМВОРКЕ:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware', # ЭТО ВСТРОЕННОЕ ПО, КОТОРОЕ ОТВЕЧАЕТ ЗА УЛУЧШЕНИЕ БЕЗОПАСНОСТИ ПРОЕКТА
@@ -158,6 +148,18 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+# ДОБАВЛЕНИЕ В API НАСТРОЙКИ ФИЛЬТРАЦИИ ДАННЫХ, РЕНДЕРИНГА И ПАРСИНГА ОТ DRF:
+#REST_FRAMEWORK = {
+#    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+#    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+#    "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",)
+#}
+
+# ФОРМАТ ВВОДА ДАТЫ:
+#DATE_INPUT_FORMATS = ["%d.%m.%Y"]  # РЕАЛИЗАЦИЯ ВВОДА ДАТЫ В ФОРМАТЕ `ДД.ММ.ГГГГ`
+# ФОРМАТ ВЫВОДА ДАТЫ:
+#DATE_FORMAT = "d.m.Y"  # ОТОБРАЖАТЬ ДАТЫ В ФОРМАТЕ `ДД.ММ.ГГГГ`
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

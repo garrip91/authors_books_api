@@ -1,0 +1,62 @@
+[
+    {
+        "model": "authors_books_app.author",
+        "pk": 1,
+        "fields": {
+            "first_name": "Джонатан",
+            "last_name": "Смит",
+            "date_of_birth": "1978-03-15",
+            "date_of_death": null
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 2,
+        "fields": {
+            "first_name": "Эмили",
+            "last_name": "Картер",
+            "date_of_birth": "1945-07-02",
+            "date_of_death": "2005-09-10"
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 3,
+        "fields": {
+            "first_name": "Александр",
+            "last_name": "Волков",
+            "date_of_birth": "1960-12-25",
+            "date_of_death": null
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 4,
+        "fields": {
+            "first_name": "София",
+            "last_name": "Морган",
+            "date_of_birth": "1930-04-30",
+            "date_of_death": "2000-03-12"
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 5,
+        "fields": {
+            "first_name": "Виктор",
+            "last_name": "Новак",
+            "date_of_birth": "1972-09-18",
+            "date_of_death": null
+        }
+    },
+    {
+        "model": "authors_books_app.author",
+        "pk": 6,
+        "fields": {
+            "first_name": "Лиза",
+            "last_name": "Тейлор",
+            "date_of_birth": "1948-11-11",
+            "date_of_death": "2015-07-22"
+        }
+    }
+]
