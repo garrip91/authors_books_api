@@ -20,25 +20,23 @@ from rest_framework.routers import DefaultRouter
 
 from .settings import DEBUG
 
-from authors_books_app.views import AuthorViewSet, GenreViewSet, BookViewSet, AllDataViewSet
+from authors_books_app.views import AuthorListView, GenreViewSet, BookViewSet, AllDataViewSet
 
 
 # ЭКЗЕМПЛЯР РОУТЕРА ДЛЯ ПЕРЕХОДА НА СТРАНИЦЫ СООТВЕТСТВУЮЩИХ API:
 router = DefaultRouter()
-router.register(r"all-data", AllDataViewSet, basename="all-data")
-router.register(r"authors", AuthorViewSet, basename="author")
-router.register(r"genres", GenreViewSet, basename="genre")
-router.register(r"books", BookViewSet, basename="book")
+router.register(r"all-data/list", AllDataViewSet, basename="all-data")
+router.register(r"genres/list", GenreViewSet, basename="genre")
+router.register(r"book/list", BookViewSet, basename="book")
 
 # ВЕРСИРОВАНИЕ API:
 api_version = "v1"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path("all-data/", AllDataViewSet.as_view(), name="all-data"),
-    path(f"api/{api_version}/", include(router.urls)),
+    path(f"api/{api_version}/", include("authors_books_app.urls", namespace=f"api_{api_version}")), # пространство имён для API v1
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path("", include("authors_books_app.urls", namespace="authors_books_app")),
+    path("", include("authors_books_app.urls", namespace="main")), # пространство имён для основного приложения
 ]
 
 if DEBUG:

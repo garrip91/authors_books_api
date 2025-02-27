@@ -87,12 +87,6 @@ WSGI_APPLICATION = 'authors_books_project.wsgi.application' # ЭТА НАСТР�
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-} """
 # НАСТРОЙКИ БАЗЫ ДАННЫХ НА СЕРВЕРЕ БАЗЫ ДАННЫХ (в данном случае сервер базы данных локальный и это PostgreSQL):
 DATABASES = {
     "default": {
@@ -148,18 +142,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
-
-# ДОБАВЛЕНИЕ В API НАСТРОЙКИ ФИЛЬТРАЦИИ ДАННЫХ, РЕНДЕРИНГА И ПАРСИНГА ОТ DRF:
-#REST_FRAMEWORK = {
-#    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-#    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
-#    "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",)
-#}
-
-# ФОРМАТ ВВОДА ДАТЫ:
-#DATE_INPUT_FORMATS = ["%d.%m.%Y"]  # РЕАЛИЗАЦИЯ ВВОДА ДАТЫ В ФОРМАТЕ `ДД.ММ.ГГГГ`
-# ФОРМАТ ВЫВОДА ДАТЫ:
-#DATE_FORMAT = "d.m.Y"  # ОТОБРАЖАТЬ ДАТЫ В ФОРМАТЕ `ДД.ММ.ГГГГ`
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

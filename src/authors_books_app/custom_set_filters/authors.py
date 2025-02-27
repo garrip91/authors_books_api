@@ -44,4 +44,4 @@ class AuthorFilterSet(filters.FilterSet):
     
     class Meta:
         model = Author
-        fields = ["first_name", "last_name"]
+        fields = ("first_name", "last_name",)

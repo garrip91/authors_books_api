@@ -10,4 +10,4 @@ class GenreFilterSet(filters.FilterSet):
     
     class Meta:
         model = Genre
-        fields = ["name"]
+        fields = ("name",)

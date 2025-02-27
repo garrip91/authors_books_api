@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import Author, Genre, Book
 
 
-#class AuthorSerializer(serializers.HyperlinkedModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     """Класс-сериализатор, используемый для преобразования объектов модели Author в формат json"""
 
@@ -11,16 +10,15 @@ class AuthorSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(required=False, allow_null=True, label="Фамилия")
 
     # ФОРМАТЫ ВВОДА И ВЫВОДА ДАТ ДЛЯ ЛИЦ, ПРИВЫКШИХ К `ДД.ММ.ГГГГ`:
-    date_of_birth = serializers.DateField(input_formats=["%Y-%m-%d", "%d.%m.%Y"], label="Дата рождения")
-    date_of_death = serializers.DateField(required=False, allow_null=True, input_formats=["%Y-%m-%d", "%d.%m.%Y"], label="Дата смерти")
+    date_of_birth = serializers.DateField(label="Дата рождения") # здесь возможно изменение формата ввода с использованием, например, `input_formats=["%Y-%m-%d", "%d.%m.%Y"]` и вывода с использованием, например, `format="%d.%m.%Y"`
+    date_of_death = serializers.DateField(required=False, allow_null=True, label="Дата смерти") # здесь тоже
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), label="Владелец")
 
     class Meta:
         model = Author
-        fields = ["id", "first_name", "last_name", "date_of_birth", "date_of_death", "owner"]
+        fields = ("id", "first_name", "last_name", "date_of_birth", "date_of_death", "owner",)
 
 
-#class GenreSerializer(serializers.HyperlinkedModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     """Класс-сериализатор, используемый для преобразования объектов модели Genre в формат json"""
 
@@ -29,10 +27,9 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ["id", "name", "owner"]
+        fields = ("id", "name", "owner",)
 
 
-#class BookSerializer(serializers.HyperlinkedModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     """Класс-сериализатор, используемый для преобразования объектов модели Book в формат json"""
     
@@ -45,7 +42,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ["id", "title", "author", "short_description", "genre", "isbn", "owner"]
+        fields = ("id", "title", "author", "short_description", "genre", "isbn", "owner",)
 
 
 class AllDataSerializer(serializers.Serializer):
