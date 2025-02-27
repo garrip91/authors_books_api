@@ -73,7 +73,7 @@ class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
         return "Автор"
     
     def get_view_description(self, html=False):
-        return "Страница API с конкретным автором книг"
+        return "Страница API с автором конкретной книги"
 
 
 class GenreViewSet(viewsets.ModelViewSet):
