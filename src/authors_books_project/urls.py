@@ -23,12 +23,6 @@ from .settings import DEBUG
 from authors_books_app.views import AuthorListView, GenreViewSet, BookViewSet, AllDataViewSet
 
 
-# ЭКЗЕМПЛЯР РОУТЕРА ДЛЯ ПЕРЕХОДА НА СТРАНИЦЫ СООТВЕТСТВУЮЩИХ API:
-router = DefaultRouter()
-router.register(r"all-data/list", AllDataViewSet, basename="all-data")
-router.register(r"genres/list", GenreViewSet, basename="genre")
-router.register(r"book/list", BookViewSet, basename="book")
-
 # ВЕРСИРОВАНИЕ API:
 api_version = "v1"
 

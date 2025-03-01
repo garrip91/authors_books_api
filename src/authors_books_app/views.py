@@ -74,13 +74,18 @@ class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     def get_view_description(self, html=False):
         return "Страница API с автором конкретной книги"
-
-
-class GenreViewSet(viewsets.ModelViewSet):
     
-    queryset = Genre.objects.all().order_by("id")
+
+class GenreListView(generics.ListCreateAPIView):
+    """Класс обработки запросов и возврата ответов для всех записей из таблицы "Genre" подключённой БД с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/genres)"""
+
+    queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, custom_permissions.IsOwnerOrReadOnly]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
+    filterset_class = GenreFilterSet
+    ordering_fields = ("name",)
+    search_fields = ("name",)
 
     def get_view_name(self):
         return "Жанры"
@@ -88,42 +93,42 @@ class GenreViewSet(viewsets.ModelViewSet):
     def get_view_description(self, html=False):
         return "Страница API с жанрами книг"
     
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_class = GenreFilterSet
-    ordering_fields = ["name"]
-    search_fields = [
-        "name",
-    ]
-
     # НАЗНАЧАЕМ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ ВЛАДЕЛЬЦЕМ ЗАПИСИ ПРИ ЕЁ СОЗДАНИИ:
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-    
-    # НАСТРАИВАЕМ ПРАВА ДОСТУПА:
-    # В этом методе мы возвращаем записи только текущего пользователя:
-    def get_queryset(self):
-        if self.action in ["list", "retrieve"]:              # для "безопасных" действий, а именно: `list` (просмотр списка объектов) и `retrieve` (просмотр деталей объекта)...
-            return Genre.objects.all()                       # ...со стороны текущего пользователя мы возвращаем ему полный набор записей из соответствующей таблицы БД,...
-        return Genre.objects.filter(owner=self.request.user) # ...а для "НЕбезопасных" действий (то есть, всех остальных self.actions) с его стороны мы возвращаем ему только свои записи из этой самой таблицы
-    
-
-class GenreListView(generics.ListCreateAPIView):
-    """Класс обработки запросов и возврата ответов для всех записей из таблицы "Genre" подключённой БД с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/genres)"""
-
-    pass
 
 
 class GenreDetailView(generics.RetrieveUpdateDestroyAPIView):
     """Класс обработки запросов и возврата ответов для запрошенной по id записи из таблицы "Genre" подключённой БД с её последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/genres/<int:pk>)""" # <int:pk> - это id
 
-    pass
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, custom_permissions.IsOwnerOrReadOnly,)
 
-
-class BookViewSet(viewsets.ModelViewSet):
+    def get_view_name(self):
+        return "Жанр"
     
-    queryset = Book.objects.all().order_by("id")
+    def get_view_description(self, html=False):
+        return "Страница API с жанром конкретной книги"
+    
+
+class BookListView(generics.ListCreateAPIView):
+    """Класс обработки запросов и возврата ответов для всех записей из таблицы "Book" подключённой БД с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/books)"""
+
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, custom_permissions.IsOwnerOrReadOnly]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
+    filterset_class = BookFilterSet
+    ordering_fields = ("title", "author", "short_description", "genre", "isbn",)
+    search_fields = (
+        "title",
+        "author__first_name",
+        "author__last_name",
+        "short_description",
+        "genre__name",
+        "isbn",
+    )
 
     def get_view_name(self):
         return "Книги"
@@ -131,40 +136,23 @@ class BookViewSet(viewsets.ModelViewSet):
     def get_view_description(self, html=False):
         return "Страница API с книгами"
     
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_class = BookFilterSet
-    ordering_fields = ["title", "author", "short_description", "genre", "isbn"]
-    search_fields = [
-        "title",
-        "author__first_name",
-        "author__last_name",
-        "short_description",
-        "genre__name",
-        "isbn",
-    ]
-
     # НАЗНАЧАЕМ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ ВЛАДЕЛЬЦЕМ ЗАПИСИ ПРИ ЕЁ СОЗДАНИИ:
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-    
-    # НАСТРАИВАЕМ ПРАВА ДОСТУПА:
-    # В этом методе мы возвращаем записи только текущего пользователя:
-    def get_queryset(self):
-        if self.action in ["list", "retrieve"]:             # для "безопасных" действий, а именно: `list` (просмотр списка объектов) и `retrieve` (просмотр деталей объекта)...
-            return Book.objects.all()                       # ...со стороны текущего пользователя мы возвращаем ему полный набор записей из соответствующей таблицы БД,...
-        return Book.objects.filter(owner=self.request.user) # ...а для "НЕбезопасных" действий (то есть, всех остальных self.actions) с его стороны мы возвращаем ему только свои записи из этой самой таблицы
-    
-
-class BookListView(generics.ListCreateAPIView):
-    """Класс обработки запросов и возврата ответов для всех записей из таблицы "Book" подключённой БД с их последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/books)"""
-
-    pass
 
 
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     """Класс обработки запросов и возврата ответов для запрошенной по id записи из таблицы "Book" подключённой БД с её последующей передачей на соответствующую страницу (в данном случае это localhost/api/v1/books/<int:pk>)""" # <int:pk> - это id
 
-    pass
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, custom_permissions.IsOwnerOrReadOnly,)
+
+    def get_view_name(self):
+        return "Книга"
+    
+    def get_view_description(self, html=False):
+        return "Страница API с с конкретной книгой"
 
 
 class AllDataViewSet(viewsets.ViewSet):

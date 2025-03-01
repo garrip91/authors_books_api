@@ -49,6 +49,15 @@ INSTALLED_APPS = [
     "authors_books_app.apps.AuthorsBooksAppConfig", # ЭТО "КАСТОМНОЕ" ПРИЛОЖЕНИЕ ДЛЯ ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЬСКИХ МОДЕЛЕЙ, ПРЕДСТАВЛЕНИЙ, ШАБЛОНОВ И Т.Д..., А ТАКЖЕ ДЛЯ ВЗАИМОДЕЙСТВИЯ С НИМИ
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}
+
 # СИСТЕМА ХУКОВ ДЛЯ ОБРАБОТКИ ЗАПРОСОВ/ОТВЕТОВ ВО ФРЕЙМВОРКЕ:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware', # ЭТО ВСТРОЕННОЕ ПО, КОТОРОЕ ОТВЕЧАЕТ ЗА УЛУЧШЕНИЕ БЕЗОПАСНОСТИ ПРОЕКТА
