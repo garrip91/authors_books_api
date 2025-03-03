@@ -32,7 +32,6 @@ class TestAuthorDetailView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ ДЕТАЛЕЙ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Author` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_author_detail(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data["first_name"] == "Мистер"
         assert response.data["last_name"] == "Всемогущий"
@@ -48,7 +47,6 @@ class TestAuthorDetailView:
             "owner": self.user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         self.author.refresh_from_db()
         assert self.author.last_name == "Могущественный" # фамилия изменилась
@@ -64,7 +62,6 @@ class TestAuthorDetailView:
             "owner": self.other_user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.author.refresh_from_db()
         assert self.author.last_name == "Всемогущий" # фамилия не изменилась
@@ -73,7 +70,6 @@ class TestAuthorDetailView:
     def test_delete_author_authenticated_owner(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Author.objects.filter(pk=self.author.pk).exists()
 
@@ -81,7 +77,6 @@ class TestAuthorDetailView:
     def test_delete_author_authenticated_not_owner(self):
         self.client.force_authenticate(user=self.other_user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Author.objects.filter(pk=self.author.pk).exists() # запись не удалена
 
@@ -95,7 +90,6 @@ class TestAuthorDetailView:
             "owner": self.user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.author.refresh_from_db()
         assert self.author.last_name == "Всемогущий"  # фамилия не изменилась
@@ -103,6 +97,5 @@ class TestAuthorDetailView:
     # ПРОВЕРКА ОТСУТСТВИЯ ВОЗМОЖНОСТИ УДАЛЕНИЯ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Author` ПОДКЛЮЧЁННОЙ БД У НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ:
     def test_delete_author_unauthenticated(self):
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Author.objects.filter(pk=self.author.pk).exists()  # запись не удалена

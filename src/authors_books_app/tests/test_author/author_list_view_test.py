@@ -24,7 +24,6 @@ class TestAuthorListView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ СПИСКА ЗАПИСЕЙ ИЗ ТАБЛИЦЫ `Author` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_author_list(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == Author.objects.count()
 
@@ -39,7 +38,6 @@ class TestAuthorListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_201_CREATED
         assert Author.objects.count() == 1
         assert Author.objects.first().owner == self.user
@@ -54,7 +52,6 @@ class TestAuthorListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Author.objects.count() == 0
 
@@ -64,7 +61,6 @@ class TestAuthorListView:
         Author.objects.create(first_name="Константин", last_name="Ковров", date_of_birth="1930-01-01")
         Author.objects.create(first_name="Михаил", last_name="Поляков", date_of_birth="1950-01-01")
         response = self.client.get(self.url, {"last_name__icontains": "ов"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 3
         assert response.data[0]["last_name"] == "Вихров"
@@ -75,7 +71,6 @@ class TestAuthorListView:
         Author.objects.create(first_name="Царевна", last_name="Лягушкина", date_of_birth="1920-01-01")
         Author.objects.create(first_name="Господин", last_name="Манушин", date_of_birth="1900-01-01")
         response = self.client.get(self.url, {"ordering": "last_name"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data[0]["last_name"] == "Всемогущий"
         assert response.data[1]["last_name"] == "Лягушкина"
@@ -87,7 +82,6 @@ class TestAuthorListView:
         Author.objects.create(first_name="Константин", last_name="Ковров", date_of_birth="1930-01-01")
         Author.objects.create(first_name="Михаил", last_name="Поляков", date_of_birth="1950-01-01")
         response = self.client.get(self.url, {"search": "ов"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 3
         assert response.data[0]["last_name"] == "Вихров"

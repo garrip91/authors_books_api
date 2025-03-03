@@ -44,7 +44,6 @@ class TestBookDetailView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ ДЕТАЛЕЙ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Book` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_book_detail(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data["title"] == "Книга"
 
@@ -60,7 +59,6 @@ class TestBookDetailView:
             "owner": self.user.id
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         self.book.refresh_from_db()
         assert self.book.title == "Книга ИЗМ." # название книги изменилось
@@ -77,7 +75,6 @@ class TestBookDetailView:
             "owner": self.other_user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.book.refresh_from_db()
         assert self.book.title == "Книга" # название книги не изменилось
@@ -86,7 +83,6 @@ class TestBookDetailView:
     def test_delete_book_authenticated_owner(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Book.objects.filter(pk=self.book.pk).exists()
 
@@ -94,7 +90,6 @@ class TestBookDetailView:
     def test_delete_book_authenticated_not_owner(self):
         self.client.force_authenticate(user=self.other_user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Book.objects.filter(pk=self.book.pk).exists() # запись не удалена
 
@@ -109,7 +104,6 @@ class TestBookDetailView:
             "owner": self.user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.book.refresh_from_db()
         assert self.book.title == "Книга" # название книги не изменилось
@@ -117,6 +111,5 @@ class TestBookDetailView:
     # ПРОВЕРКА ОТСУТСТВИЯ ВОЗМОЖНОСТИ УДАЛЕНИЯ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Book` ПОДКЛЮЧЁННОЙ БД У НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ:
     def test_delete_book_unauthenticated(self):
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Book.objects.filter(pk=self.book.pk).exists()  # запись не удалена

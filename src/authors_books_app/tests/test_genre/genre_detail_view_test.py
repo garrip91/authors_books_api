@@ -29,7 +29,6 @@ class TestGenreDetailView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ ДЕТАЛЕЙ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Genre` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_genre_detail(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data["name"] == "Жанр"
 
@@ -41,7 +40,6 @@ class TestGenreDetailView:
             "owner": self.user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         self.genre.refresh_from_db()
         assert self.genre.name == "Жанр изменённый" # название жанра изменилось
@@ -54,7 +52,6 @@ class TestGenreDetailView:
             "owner": self.other_user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.genre.refresh_from_db()
         assert self.genre.name == "Жанр" # название жанра не изменилось
@@ -63,7 +60,6 @@ class TestGenreDetailView:
     def test_delete_genre_authenticated_owner(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Genre.objects.filter(pk=self.genre.pk).exists()
 
@@ -71,7 +67,6 @@ class TestGenreDetailView:
     def test_delete_genre_authenticated_not_owner(self):
         self.client.force_authenticate(user=self.other_user)
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Genre.objects.filter(pk=self.genre.pk).exists() # запись не удалена
 
@@ -82,7 +77,6 @@ class TestGenreDetailView:
             "owner": self.user.id,
         }
         response = self.client.put(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         self.genre.refresh_from_db()
         assert self.genre.name == "Жанр" # название жанра не изменилось
@@ -90,6 +84,5 @@ class TestGenreDetailView:
     # ПРОВЕРКА ОТСУТСТВИЯ ВОЗМОЖНОСТИ УДАЛЕНИЯ КОНКРЕТНОЙ ЗАПИСИ ИЗ ТАБЛИЦЫ `Genre` ПОДКЛЮЧЁННОЙ БД У НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ:
     def test_delete_genre_unauthenticated(self):
         response = self.client.delete(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Genre.objects.filter(pk=self.genre.pk).exists()  # запись не удалена

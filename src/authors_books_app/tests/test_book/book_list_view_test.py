@@ -43,7 +43,6 @@ class TestBookListView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ СПИСКА ЗАПИСЕЙ ИЗ ТАБЛИЦЫ `Book` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_book_list(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == Book.objects.count()
 
@@ -59,7 +58,6 @@ class TestBookListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_201_CREATED
         assert Book.objects.count() == 2
         assert Book.objects.last().owner == self.user
@@ -75,7 +73,6 @@ class TestBookListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Book.objects.count() == 1
 
@@ -85,7 +82,6 @@ class TestBookListView:
         Book.objects.create(title="Книга 000234")
         Book.objects.create(title="Книга 000345")
         response = self.client.get(self.url, {"title__icontains": "3"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 4
         assert response.data[1]["title"] == "Книга 000123"
@@ -96,7 +92,6 @@ class TestBookListView:
         Book.objects.create(title="Книга 000234")
         Book.objects.create(title="Книга 000345")
         response = self.client.get(self.url, {"ordering": "title"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data[1]["title"] == "Книга 000123"
         assert response.data[2]["title"] == "Книга 000234"
@@ -108,7 +103,6 @@ class TestBookListView:
         Book.objects.create(title="Книга 000234")
         Book.objects.create(title="Книга 000345")
         response = self.client.get(self.url, {"search": "3"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 3
         assert response.data[0]["title"] == "Книга 000123"

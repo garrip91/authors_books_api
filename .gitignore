@@ -1,5 +1,6 @@
 GitHubToken.txt
 secrets.py
+show_response_data_using_print_for_example.txt
 
 venv/
 .vscode/

@@ -24,7 +24,6 @@ class TestGenreListView:
     # ПРОВЕРКА ВОЗМОЖНОСТИ ПОЛУЧЕНИЯ СПИСКА ЗАПИСЕЙ ИЗ ТАБЛИЦЫ `Genre` ПОДКЛЮЧЁННОЙ БД ВСЕМИ ПОЛЬЗОВАТЕЛЯМИ:
     def test_get_genre_list(self):
         response = self.client.get(self.url)
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == Genre.objects.count()
 
@@ -36,7 +35,6 @@ class TestGenreListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_201_CREATED
         assert Genre.objects.count() == 1
         assert Genre.objects.first().owner == self.user
@@ -48,7 +46,6 @@ class TestGenreListView:
             "owner": self.user.id,
         }
         response = self.client.post(self.url, data, format="json")
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert Genre.objects.count() == 0
 
@@ -58,7 +55,6 @@ class TestGenreListView:
         Genre.objects.create(name="Жанр 000234")
         Genre.objects.create(name="Жанр 000345")
         response = self.client.get(self.url, {"name__icontains": "3"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 3
         assert response.data[0]["name"] == "Жанр 000123"
@@ -69,7 +65,6 @@ class TestGenreListView:
         Genre.objects.create(name="Жанр 000234")
         Genre.objects.create(name="Жанр 000345")
         response = self.client.get(self.url, {"ordering": "name"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert response.data[0]["name"] == "Жанр 000123"
         assert response.data[1]["name"] == "Жанр 000234"
@@ -81,7 +76,6 @@ class TestGenreListView:
         Genre.objects.create(name="Жанр 000234")
         Genre.objects.create(name="Жанр 000345")
         response = self.client.get(self.url, {"search": "3"})
-        print(f"****[[ {response.data} ]]****")  # вывод содержимого ответа сервера для отладки
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 3
         assert response.data[0]["name"] == "Жанр 000123"
