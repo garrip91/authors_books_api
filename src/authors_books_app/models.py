@@ -48,7 +48,7 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, blank=True, null=True, help_text="Выберите здесь автора книги", verbose_name="Автор")
     short_description = models.TextField(max_length=1000, help_text="Укажите здесь краткое описание книги", verbose_name="Краткое описание")
     genre = models.ManyToManyField(Genre, help_text="Выберите здесь жанр книги", verbose_name="Жанр")
-    isbn = models.CharField(max_length=20, help_text="Укажите здесь ISBN книги", verbose_name="ISBN", blank=True, null=True)
+    isbn = models.CharField(max_length=20, help_text="Укажите здесь ISBN книги", verbose_name="ISBN", blank=True, null=True, unique=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", blank=True, null=True)
     
     class Meta:
