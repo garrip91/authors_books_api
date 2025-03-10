@@ -2,10 +2,12 @@ GitHubToken.txt
 secrets.py
 show_response_data_using_print_for_example.txt
 
-venv/
-.vscode/
+venv/*
+.vscode/*
 *.sqlite3
-__pycache__/
+__pycache__/*
 __pycache__
-.pytest_cache/
+.pytest_cache/*
 .coverage
+\!authors_books_app/*
+\!settings.py
