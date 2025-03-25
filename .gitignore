@@ -17,5 +17,6 @@ src/\!authors_books_app/*
 \!migrations/*
 api_key.py
 .env
-!kinopoiskapiunofficial_tech_api.py
-!profession_key_choices_for_profession_field_in_models.py
+src/kinopoiskapiunofficial_tech_app/\!kinopoiskapiunofficial_tech_api.py
+src/kinopoiskapiunofficial_tech_app/\!profession_key_choices_for_profession_field_in_models.py
+src/kinopoiskapiunofficial_tech_app/\!JSON-responses/*
