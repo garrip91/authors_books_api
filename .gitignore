@@ -9,7 +9,7 @@ __pycache__/*
 __pycache__
 .pytest_cache/*
 .coverage
-\!authors_books_app/*
+src/\!authors_books_app/*
 \!settings.py
 *Zone*
 \!secrets.py
