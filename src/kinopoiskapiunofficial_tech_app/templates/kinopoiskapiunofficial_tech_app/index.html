@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Фильмы и актёры</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <meta property="og:title" content="Заголовок страницы в OG" />
+    <meta property="og:description" content="Описание страницы в OG" />
+    <meta property="og:image" content="https://example.com/image.jpg" />
+    <meta property="og:url" content="https://example.com/" />
+  </head>
+  <body>
+    <style>
+      table, td, th {
+        /* задаем границу для всех элементов */
+        border: 3px solid #245488;
+      }
+      td, th {
+        /* делаем отступ в ячейках, выставляем выравнивание текста */
+        padding: 10px 20px;
+        text-align: center;
+      }
+    </style>
+    <header>
+      <h1>Фильмы и актёры</h1>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Год выхода</th>
+            <th>Актёры</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for film in films %}
+            <tr>
+              <td>{{ film.name }}</td>
+              <td>{{ film.year }}</td>
+              <td>
+                {% for actor in film.actors.all %}
+                  {{ actor.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </main>
+    <footer>
+      <p>Место для информации о фильмах, актёрах и всяких ссылках</p>
+    </footer>
+    <!-- сюда можно подключить jquery <script src="scripts/app.js" defer></script> -->
+  </body>
+</html>

@@ -11,3 +11,11 @@ __pycache__
 .coverage
 \!authors_books_app/*
 \!settings.py
+*Zone*
+\!secrets.py
+\!urls.py
+\!migrations/*
+api_key.py
+.env
+!kinopoiskapiunofficial_tech_api.py
+!profession_key_choices_for_profession_field_in_models.py

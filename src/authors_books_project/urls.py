@@ -25,9 +25,9 @@ api_version = "v1"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(f"api/{api_version}/", include("authors_books_app.urls", namespace=f"api_{api_version}")), # пространство имён для API v1
+    path(f"api/{api_version}/", include("kinopoiskapiunofficial_tech_app.urls", namespace=f"api_{api_version}")), # пространство имён для API v1
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path("", include("authors_books_app.urls", namespace="main")), # пространство имён для основного приложения
+    path("", include("kinopoiskapiunofficial_tech_app.urls", namespace="main")), # пространство имён для основного приложения
 ]
 
 if DEBUG:
