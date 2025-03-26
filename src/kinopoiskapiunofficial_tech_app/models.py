@@ -4,12 +4,17 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class User(AbstractUser):
     """Класс для пользователей, которые либо являются владельцами конкретной записи в БД, либо нет"""
 
-    is_owner = models.BooleanField(default=False, verbose_name="Владелец")
+    is_owner = models.BooleanField(default=False, verbose_name="Владелец записи")
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
 
 class Film(models.Model):
@@ -20,6 +25,7 @@ class Film(models.Model):
     year = models.IntegerField(null=True, blank=True, verbose_name="Год выхода")
     actors = models.ManyToManyField("Actor", related_name="film_actors", blank=True, verbose_name="Персонал")
     created_or_updated_at = models.DateTimeField(auto_now=True, verbose_name="Создано/Обновлено")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="films", verbose_name="Владелец записи")
     
     class Meta:
         ordering = ("id",)
@@ -40,6 +46,7 @@ class Actor(models.Model):
     poster_url = models.URLField(max_length=500, null=True, blank=True, unique=True, verbose_name="Ссылка на постер")
     profession = models.CharField(max_length=255, null=True, blank=True, verbose_name="Профессия/Специальность")
     created_or_updated_at = models.DateTimeField(auto_now=True, verbose_name="Создано/Обновлено")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="actors", verbose_name="Владелец записи")
     
     class Meta:
         ordering = ("id",)

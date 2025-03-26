@@ -45,17 +45,20 @@ class FilmListView(generics.ListCreateAPIView):
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
     filterset_class = FilmFilterSet
     ordering_fields = ("kinopoisk_id", "name", "year", "created_or_updated_at",)
-    search_fields = ("kinopoisk_id", "name", "year", "created_or_updated_at_str",)
+    search_fields = ("kinopoisk_id", "name", "year",)
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.annotate(
-            updated_at_str=Cast("created_or_updated_at", output_field=CharField())
-        )
-        search_term = self.request.query_params.get("search", None)
-        if search_term:
-            queryset = queryset.filter(created_or_updated_at_str__icontains=search_term)
-        return queryset
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
+    #def get_queryset(self):
+    #    queryset = super().get_queryset()
+    #    queryset = queryset.annotate(
+    #        updated_at_str=Cast("created_or_updated_at", output_field=CharField())
+    #    )
+    #    search_term = self.request.query_params.get("search", None)
+    #    if search_term:
+    #        queryset = queryset.filter(created_or_updated_at_str__icontains=search_term)
+    #    return queryset
 
     def get_view_name(self):
         return "Фильмы"
@@ -71,6 +74,9 @@ class FilmDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FilmSerializer
     permission_classes = (ReadForAllCreateUpdateDeleteForOwnerOrAdmin,)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
     def get_view_name(self):
         return "Фильм"
     
@@ -87,17 +93,20 @@ class ActorListView(generics.ListCreateAPIView):
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter,)
     filterset_class = ActorFilterSet
     ordering_fields = ("id", "staff_id", "name", "poster_url", "profession", "created_or_updated_at",)
-    search_fields = ("id", "staff_id", "name", "poster_url", "profession", "created_or_updated_at_str",)
+    search_fields = ("id", "staff_id", "name", "poster_url", "profession",)
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.annotate(
-            updated_at_str=Cast("updated_at", output_field=CharField())
-        )
-        search_term = self.request.query_params.get("search", None)
-        if search_term:
-            queryset = queryset.filter(updated_at_str__icontains=search_term)
-        return queryset
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
+    #def get_queryset(self):
+    #    queryset = super().get_queryset()
+    #    queryset = queryset.annotate(
+    #        updated_at_str=Cast("updated_at", output_field=CharField())
+    #    )
+    #    search_term = self.request.query_params.get("search", None)
+    #    if search_term:
+    #        queryset = queryset.filter(updated_at_str__icontains=search_term)
+    #    return queryset
     
     def get_view_name(self):
         return "Актёры"
@@ -113,6 +122,9 @@ class ActorDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ActorSerializer
     permission_classes = (ReadForAllCreateUpdateDeleteForOwnerOrAdmin,)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
     def get_view_name(self):
         return "Актёр"
     

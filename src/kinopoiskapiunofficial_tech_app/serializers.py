@@ -6,12 +6,12 @@ from .models import Film, Actor
 class FilmSerializer(serializers.ModelSerializer):
     """Класс-сериализатор, используемый для преобразования объектов модели Film в формат json"""
 
-    kinopoisk_id = serializers.IntegerField(required=False, allow_null=True, label="ID фильма на сайте")
+    kinopoisk_id = serializers.IntegerField(required=False, allow_null=True, label="ID фильма на стороне API")
     name = serializers.CharField(allow_null=True, allow_blank=True, required=False, label="Название")
     year = serializers.IntegerField(allow_null=True, required=False, label="Год выхода")
     actors = serializers.SerializerMethodField(allow_null=True, required=False, label="Актёры") # для отображения строкового представления поля actors
     created_or_updated_at_formatted = serializers.SerializerMethodField()
-
+    
     def get_actors(self, obj):
         """
         Возвращает строковое представление поля actors.
