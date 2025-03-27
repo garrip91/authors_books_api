@@ -27,3 +27,10 @@ class ReadForAllCreateUpdateDeleteForOwnerOrAdmin(permissions.BasePermission):
             return True
         # ОПЕРАЦИИ "UPDATE" И "DELETE" РАЗРЕШАЕМ ТОЛЬКО ВЛАДЕЛЬЦАМ ЗАПИСЕЙ И АДМИНАМ ПРОЕКТА:
         return obj.owner == request.user or request.user.is_staff
+
+
+class AuthenticatedOnly(permissions.BasePermission):
+    """Разрешает доступ только аутентифицированным пользователям"""
+    
+    def has_permission(self, request, view):
+        return request.user.is_authenticated

@@ -11,14 +11,12 @@ from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Film, Actor
-#from .serializers import AuthorSerializer, GenreSerializer, BookSerializer, AllDataSerializer
 from .serializers import FilmSerializer, ActorSerializer
 
 from .custom_set_filters.films import FilmFilterSet
 from . custom_set_filters.actors import ActorFilterSet
-#from . custom_set_filters.genres import GenreFilterSet
 
-from .custom_permissions import ReadForAllCreateUpdateDeleteForOwnerOrAdmin
+from .custom_permissions import ReadForAllCreateUpdateDeleteForOwnerOrAdmin, AuthenticatedOnly
 from .api_sync import APISynchronizer
 
 
@@ -49,16 +47,6 @@ class FilmListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-    
-    #def get_queryset(self):
-    #    queryset = super().get_queryset()
-    #    queryset = queryset.annotate(
-    #        updated_at_str=Cast("created_or_updated_at", output_field=CharField())
-    #    )
-    #    search_term = self.request.query_params.get("search", None)
-    #    if search_term:
-    #        queryset = queryset.filter(created_or_updated_at_str__icontains=search_term)
-    #    return queryset
 
     def get_view_name(self):
         return "Фильмы"
@@ -98,16 +86,6 @@ class ActorListView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
     
-    #def get_queryset(self):
-    #    queryset = super().get_queryset()
-    #    queryset = queryset.annotate(
-    #        updated_at_str=Cast("updated_at", output_field=CharField())
-    #    )
-    #    search_term = self.request.query_params.get("search", None)
-    #    if search_term:
-    #        queryset = queryset.filter(updated_at_str__icontains=search_term)
-    #    return queryset
-    
     def get_view_name(self):
         return "Актёры"
     
@@ -135,23 +113,28 @@ class ActorDetailView(generics.RetrieveUpdateDestroyAPIView):
 class DownloadFilmsAndActorsByGETMethodView(APIView):
     
     authentication_classes = (authentication.SessionAuthentication, authentication.BasicAuthentication,)
-    permission_classes = (ReadForAllCreateUpdateDeleteForOwnerOrAdmin,)
+    permission_classes = (AuthenticatedOnly,)
     
     def get(self, request):
         """Эндпоинт для загрузки информации о фильмах в базу данных (localhost) через браузер (GET-методом)"""
 
         try:
             api = APISynchronizer()
-            # ПОЛУЧАЕМ СТРАНИЦУ ИЗ GET-ПАРАМЕТРОВ:
-            page = request.GET.get("page", 1)
+            # ПОЛУЧАЕМ ЗНАЧЕНИЕ СТРАНИЦЫ ИЗ GET-ПАРАМЕТРОВ И ПРЕОБРАЗУЕМ ЕГО В ЧИСЛО (int()):
+            page = int(request.GET.get("page", 1))
             result = api.sync_films_and_actors(page=page, user=request.user)
             return Response(
                 {
-                    "message": f"Информация о {result["synced_count"]} фильмах и их актёрах успешно загружена в Вашу базу данных!",
+                    "message": f"Информация о {result['synced_count']} фильмах и их актёрах успешно загружена в Вашу базу данных!",
                     "page": result["current_page"],
                     "total_pages": result["total_pages"]
                 },
                 status=status.HTTP_200_OK
+            )
+        except ValueError:
+            return Response(
+                {"error": "Параметр 'page' должен иметь числовое значение!"},
+                status=status.HTTP_400_BAD_REQUEST
             )
         except Exception as e:
             return Response(
@@ -172,7 +155,7 @@ class DownloadFilmsAndActorsByPOSTMethodView(DownloadFilmsAndActorsByGETMethodVi
             result = api.sync_films_and_actors(page=page, user=request.user)
             return Response(
                 {
-                    "message": f"Информация о {result["synced_count"]} фильмах и их актёрах успешно загружена в Вашу базу данных!",
+                    "message": f"Информация о {result['synced_count']} фильмах и их актёрах успешно загружена в Вашу базу данных!",
                     "page": result["current_page"],
                     "total_pages": result["total_pages"]
                 },
