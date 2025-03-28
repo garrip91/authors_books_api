@@ -1,10 +1,14 @@
 from django.db import models
 
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
-
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+
+import logging
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+
+
+logger = logging.getLogger("kinopoiskapiunofficial_tech_app")
 
 
 class User(AbstractUser):
@@ -15,6 +19,11 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+    
+    def save(self, *args, **kwargs):
+        logger.debug(f"Сохранение записи о пользователе {self.username}, is_owner={self.is_owner}...")
+        super().save(*args, **kwargs)
+        logger.info(f"Запись о пользователе {self.username} успешно сохранена/обновлена!")
 
 
 class Film(models.Model):
@@ -34,6 +43,11 @@ class Film(models.Model):
     
     def __str__(self):
         return f"{self.name} {self.year}"
+    
+    def save(self, *args, **kwargs):
+        logger.debug(f"Сохранение записи о фильме: {self.name}, kinopoisk_id={self.kinopoisk_id}, owner={self.owner}...")
+        super().save(*args, **kwargs)
+        logger.info(f"Запись о фильме {self.name} (ID: {self.id}) успешно сохранена/обновлена!")
 
 
 class Actor(models.Model):
@@ -55,3 +69,20 @@ class Actor(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        logger.debug(f"Сохранение записи об актёрах: {self.name}, staff_id={self.staff_id}, profession={self.profession}, owner={self.owner}...")
+        super().save(*args, **kwargs)
+        logger.info(f"Запись об актёрах {self.name} (ID: {self.id}) успешно сохранена/обновлена!")
+
+
+@receiver(post_delete, sender=Film)
+def log_film_deletion(sender, instance, **kwargs):
+    logger.debug(f"Сигнал 'post_delete' для записи о фильме: {instance.name} (ID: {instance.id})...")
+    logger.info(f"Запись о фильме {instance.name} (ID: {instance.id}) удалена!")
+
+
+@receiver(post_delete, sender=Actor)
+def log_actor_deletion(sender, instance, **kwargs):
+    logger.debug(f"Сигнал 'post_delete' для записи об актёрах: {instance.name} (ID: {instance.id})")
+    logger.info(f"Запись об актёрах {instance.name} (ID: {instance.id}) удалена!")

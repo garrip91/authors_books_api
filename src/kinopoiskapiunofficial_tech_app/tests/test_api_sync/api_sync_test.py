@@ -4,6 +4,7 @@
 
 import pytest
 from django.contrib.auth import get_user_model
+import requests
 from kinopoiskapiunofficial_tech_app.models import Film, Actor
 from kinopoiskapiunofficial_tech_app.api_sync import APISynchronizer
 
@@ -151,6 +152,7 @@ class TestAPISynchronizer:
     def test_get_films_error(self, mocker):
         mock_response = mocker.MagicMock()
         mock_response.status_code = 404
+        mock_response.raise_for_status.side_effect = requests.HTTPError()
         
         mocker.patch(
             "requests.get",
@@ -178,6 +180,7 @@ class TestAPISynchronizer:
     def test_get_actors_error(self, mocker):
         mock_response = mocker.MagicMock()
         mock_response.status_code = 500
+        mock_response.raise_for_status.side_effect = requests.HTTPError()
         
         mocker.patch(
             "requests.get",
@@ -209,6 +212,7 @@ class TestAPISynchronizer:
     def test_make_request_error(self, mocker):
         mock_response = mocker.MagicMock()
         mock_response.status_code = 400
+        mock_response.raise_for_status.side_effect = requests.HTTPError()
         
         mocker.patch(
             "requests.get",

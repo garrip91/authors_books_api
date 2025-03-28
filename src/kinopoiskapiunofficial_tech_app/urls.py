@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, FilmListView, FilmDetailView, ActorListView, ActorDetailView, DownloadFilmsAndActorsByGETMethodView, DownloadFilmsAndActorsByPOSTMethodView
+from .views import index, FilmListView, FilmDetailView, ActorListView, ActorDetailView, DownloadFilmsAndActorsByGETMethodView
 
 
 app_name = "main"
@@ -14,5 +14,4 @@ urlpatterns = [
     path("actors/<int:pk>/", ActorDetailView.as_view(), name="actor-detail"),  # страница актёра с искомым id/pk
 
     path("films-and-actors/download/get/", DownloadFilmsAndActorsByGETMethodView.as_view(), name="download-films-and-actors-by-get-method"),
-    path("films-and-actors/download/post/", DownloadFilmsAndActorsByPOSTMethodView.as_view(), name="download-films-and-actors-by-post-method"),
 ]

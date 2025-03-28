@@ -174,3 +174,48 @@ INTERNAL_IPS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' # ЭТА НАСТРОЙКА ОТВЕЧАЕТ ЗА ТИП ПОЛЯ ПО УМОЛЧАНИЮ ДЛЯ АВТОМАТИЧЕСКИ СОЗДАВАЕМОГО ПЕРВИЧНОГО КЛЮЧА (Primary Key) В МОДЕЛИ
 
 AUTH_USER_MODEL = "kinopoiskapiunofficial_tech_app.User"
+
+# НАСТРОЙКИ ЛОГИРОВАНИЯ:
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    # ОПРЕДЕЛЯЕМ 2 ФОРМАТА ЛОГОВ, А ИМЕННО: ПОДРОБНЫЙ (С УКАЗАНИЕМ ВРЕМЕНИ И МОДУЛЯ) И ПРОСТОЙ (С УКАЗАНИЕМ ТОЛЬКО УРОВНЯ И СООБЩЕНИЯ):
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    # ЛОГИ БУДУТ ВЫВОДИТЬСЯ В КОНСОЛЬ (ДЛЯ РАЗРАБОТКИ) И В ФАЙЛ logs/app.log (ДЛЯ "ПРОД"-А):
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "app.log"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        # ДЛЯ ВСТРОЕННЫХ КОМПОНЕНТОВ ФРЕЙМВОРКА:
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        # ДЛЯ ПРИЛОЖЕНИЯ:
+        "kinopoiskapiunofficial_tech_app": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
